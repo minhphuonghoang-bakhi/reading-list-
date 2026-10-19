@@ -14,7 +14,6 @@ Build a REST API for a personal reading list.
 - **Nginx and Docker Compose** for the provided application environment.
 - **Composer** for dependency management and PSR-4 autoloading.
 - **PDO** with prepared statements for database access.
-- **PHP dotenv** for environment-based configuration.
 
 # 3. Architecture
 
