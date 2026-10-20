@@ -98,3 +98,26 @@ I will test the API using an HTTP client such as Postman or curl, including succ
 Special attention will be given to authentication, data validation, and ensuring that users cannot access or modify other users' books.
 
 The final submission will include the application source code, database schema and required data export, together with README documentation describing setup, usage, and relevant design decisions.
+
+# 9. Todos (Kanban Style)
+
+## To do
+- [ ] Login
+- [ ] AuthMiddleware + Logout
+- [ ] Books: create + list (pagination, tag filter)
+- [ ] Books: update, status, delete
+- [ ] Security review
+- [ ] Tests, README, database dump
+
+## Doing
+- [ ] Register
+
+## Done
+- [x] Setup (Docker, Composer, .env)
+- [x] PLANNING.md
+- [x] HTTP foundation
+
+## Later (as bonus)
+- [ ] Search books by author
+- [ ] Rate limiting
+- [ ] Unit tests for services
