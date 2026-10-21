@@ -1,14 +1,25 @@
 <?php
 
-echo "Hello, World!<br>";
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use App\Http\HttpException;
+use App\Http\Request;
+use App\Http\Response;
+use App\Http\Router;
 
 try {
-    $pdo = new PDO(
-        'mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_DATABASE'),
-        getenv('DB_USERNAME'),
-        getenv('DB_PASSWORD')
-    );
-    echo "MySQL connection: OK";
-} catch (PDOException $e) {
-    echo "MySQL connection: FAILED — " . $e->getMessage();
+    $router = new Router();
+    /** To verify quickly if the app is running */
+    $router->add('GET', '/health', fn () => Response::json(['status' => 'ok']));
+
+    $response = $router->dispatch(Request::fromGlobals());
+} catch (HttpException $e) {
+    $response = Response::json(['error' => $e->getMessage()], $e->status);
+} catch (Throwable $e) {
+    error_log((string) $e);                                   // details go to the log only
+    $response = Response::json(['error' => 'Internal server error'], 500);
 }
+
+$response->send();
