@@ -102,20 +102,20 @@ The final submission will include the application source code, database schema a
 # 9. Todos (Kanban Style)
 
 ## To do
-- [ ] Login
-- [ ] AuthMiddleware + Logout
 - [ ] Books: create + list (pagination, tag filter)
 - [ ] Books: update, status, delete
 - [ ] Security review
 - [ ] Tests, README, database dump
 
 ## Doing
-- [ ] Register
+- [ ] Login
+- [ ] AuthMiddleware + Logout
 
 ## Done
 - [x] Setup (Docker, Composer, .env)
 - [x] PLANNING.md
 - [x] HTTP foundation
+- [x] Register
 
 ## Later (as bonus)
 - [ ] Search books by author
