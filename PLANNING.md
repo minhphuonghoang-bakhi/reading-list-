@@ -106,7 +106,10 @@ The final submission will include the application source code, database schema a
 - [ ] Books: update, status, delete
 - [ ] Security review
 - [ ] Tests, README, database dump
-
+- [ ] Security review
+    - [ ] **Found:** Nginx `root` points to `app/`, so files like `/.env`, `/composer.json`
+      and `/vendor/*` may be served directly (`.env` contains DB credentials).
+      Fix: only expose `index.php` (e.g. move it to `app/public/` and point `root` there).
 ## Doing
 - [ ] AuthMiddleware + Logout
 
