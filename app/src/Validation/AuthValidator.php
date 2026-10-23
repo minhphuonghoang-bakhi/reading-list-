@@ -33,4 +33,19 @@ final class AuthValidator
             'password' => $password,
         ];
     }
+
+    public static function login(array $data): array
+    {
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+
+        if (!is_string($email) || $email === '' || !is_string($password) || $password === '') {
+            throw new HttpException(400, 'email and password are required');
+        }
+
+        return [
+            'email' => strtolower($email),
+            'password' => $password,
+        ];
+    }
 }
