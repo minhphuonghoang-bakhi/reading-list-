@@ -25,8 +25,10 @@ try {
     /** To verify quickly if the app is running */
     $router->add('GET', '/health', fn () => Response::json(['status' => 'ok']));
     $router->add('POST', '/register', [$auth, 'register']);
+    $router->add('POST', '/login', [$auth, 'login']);
 
     $response = $router->dispatch(Request::fromGlobals());
+
 } catch (HttpException $e) {
     $response = Response::json(['error' => $e->getMessage()], $e->status);
 } catch (Throwable $e) {
