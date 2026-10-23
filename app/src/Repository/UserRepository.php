@@ -25,7 +25,7 @@ final class UserRepository
             throw $e;
         }
 
-        return (int)$this->pdo->lastInsertId();
+        return (int)$this->pdo->lastInsertId(); // Assign the auto-generated ID from the database to the $userId variable in PHP.
     }
 
     public function findByEmail(string $email): ?array
