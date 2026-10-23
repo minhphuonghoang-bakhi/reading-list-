@@ -108,7 +108,6 @@ The final submission will include the application source code, database schema a
 - [ ] Tests, README, database dump
 
 ## Doing
-- [ ] Login
 - [ ] AuthMiddleware + Logout
 
 ## Done
@@ -116,6 +115,8 @@ The final submission will include the application source code, database schema a
 - [x] PLANNING.md
 - [x] HTTP foundation
 - [x] Register
+- [x] Login
+
 
 ## Later (as bonus)
 - [ ] Search books by author
