@@ -19,6 +19,6 @@ final class AuthService {
         // create user
         $userId = $this->users->create($name, $email, password_hash($password, PASSWORD_DEFAULT));
         // create token for user
-        return $this->tokens->createForUser($userId);
+        return $this->tokens->createForUser($userId);  // Assign the auto-generated ID from the database to the $userId variable in PHP.
     }
 }
