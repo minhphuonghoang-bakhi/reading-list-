@@ -22,4 +22,12 @@ final class AuthController
 
         return Response::json(['token' => $token], 201);
     }
+
+    public function login(Request $request, array $params = []): Response
+    {
+        $data = AuthValidator::login($request->json());
+        $token = $this->auth->login($data['email'], $data['password']);
+
+        return Response::json(['token' => $token]);
+    }
 }
