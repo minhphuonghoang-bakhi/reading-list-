@@ -2,7 +2,9 @@
   "name": "minh/reading-list-api",
   "type": "project",
   "require": {
-    "php": ">=8.3"
+    "php": ">=8.3",
+    "ext-mbstring": "*",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {
