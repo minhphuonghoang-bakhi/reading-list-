@@ -43,3 +43,23 @@ Authorization: Bearer {{token}}
 
 ### Logout without token (expect 401)
 POST http://localhost:8080/logout
+
+### Create book (expect 201)
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": " The Pragmatic Programmer ", "description": "Tips for becoming a better developer", "tags": ["Tech", "must-read", "tech"]}
+
+### Create book without token (expect 401)
+POST http://localhost:8080/books
+Content-Type: application/json
+
+{"title": "No token"}
+
+### Create book with invalid data (expect 400)
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "", "tags": "tech"}
