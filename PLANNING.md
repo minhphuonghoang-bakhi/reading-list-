@@ -109,7 +109,6 @@ The final submission will include the application source code, database schema a
       Fix: only expose `index.php` (e.g. move it to `app/public/` and point `root` there).
 
 ## Doing
-- [ ] Books: create + list (pagination, tag filter)
 - [ ] Books: update, status, delete
 
 ## Done
@@ -119,6 +118,8 @@ The final submission will include the application source code, database schema a
 - [x] Register
 - [x] Login
 - [x] AuthMiddleware + Logout
+- [x] Books: create + list (pagination, tag filter)
+
 
 ## Later (as bonus)
 - [ ] Search books by author
