@@ -43,3 +43,5 @@ CREATE TABLE IF NOT EXISTS book_tag (
     CONSTRAINT fk_book_tag_book FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
     CONSTRAINT fk_book_tag_tag  FOREIGN KEY (tag_id)  REFERENCES tags (id)  ON DELETE CASCADE
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE books ADD UNIQUE KEY uq_books_user_title (user_id, title);
