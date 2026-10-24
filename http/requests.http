@@ -32,3 +32,14 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {"email": "nobody@example.com", "password": "password123"}
+
+### Logout (expect 204)
+POST http://localhost:8080/logout
+Authorization: Bearer {{token}}
+
+### Logout again with the same token (expect 401, token is already revoked)
+POST http://localhost:8080/logout
+Authorization: Bearer {{token}}
+
+### Logout without token (expect 401)
+POST http://localhost:8080/logout
