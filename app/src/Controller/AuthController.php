@@ -29,4 +29,10 @@ final class AuthController
 
         return Response::json(['token' => $token]);
     }
+    public function logout(Request $request, array $params = []): Response
+    {
+        $this->auth->logout($request->bearerToken());
+
+        return Response::noContent();
+    }
 }
