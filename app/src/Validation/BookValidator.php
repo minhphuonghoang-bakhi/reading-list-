@@ -74,6 +74,36 @@ final class BookValidator
         }
         return $int;
     }
+
+    private const STATUSES = ['unread', 'reading', 'read'];
+
+    /** PUT sends the full book, so the rules are the same as for create. */
+    public static function update(array $data): array
+    {
+        return self::create($data);
+    }
+
+    public static function status(array $data): string
+    {
+        $status = $data['status'] ?? null;
+
+        if (!in_array($status, self::STATUSES, true)) {
+            throw new HttpException(400, 'status must be one of: unread, reading, read');
+        }
+
+        return $status;
+    }
+
+    /** Book id from the URL (/books/{id}). Anything that is not a positive integer cannot exist. */
+    public static function id(array $params): int
+    {
+        $id = filter_var($params['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($id === false) {
+            throw new HttpException(404, 'Book not found');
+        }
+
+        return $id;
+    }
 }
 
 

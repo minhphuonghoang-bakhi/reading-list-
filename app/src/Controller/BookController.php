@@ -41,4 +41,26 @@ final class BookController {
             'total' => $result['total'],
         ]);
     }
+
+    public function update(Request $request, array $params = []): Response
+    {
+        $userId = $this->authenticator->userId($request);
+        $bookId = BookValidator::id($params);
+        $data = BookValidator::update($request->json());
+
+        $book = $this->books->update($userId, $bookId, $data['title'], $data['description'], $data['tags']);
+
+        return Response::json($book->toArray());
+    }
+
+    public function status(Request $request, array $params = []): Response
+    {
+        $userId = $this->authenticator->userId($request);
+        $bookId = BookValidator::id($params);
+        $status = BookValidator::status($request->json());
+
+        $book = $this->books->changeStatus($userId, $bookId, $status);
+
+        return Response::json($book->toArray());
+    }
 }

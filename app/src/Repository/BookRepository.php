@@ -19,10 +19,7 @@ final class BookRepository {
         try {
             $stmt->execute([$userId, $title, $description]);
         } catch (\PDOException $e) {
-            if (($e->errorInfo[1] ?? null) === 1062) {
-                throw new HttpException(400, 'You already have a book with this title');
-            }
-            throw $e;
+            $this->handleDuplicateTitle($e);
         }
         return (int)$this->pdo->lastInsertId();
     }
@@ -117,5 +114,30 @@ final class BookRepository {
         }
 
         return $sql;
+    }
+
+    public function update(int $id, string $title, ?string $description): void
+    {
+        $stmt = $this->pdo->prepare('UPDATE books SET title = ?, description = ? WHERE id = ?');
+        try {
+            $stmt->execute([$title, $description, $id]);
+        } catch (\PDOException $e) {
+            $this->handleDuplicateTitle($e);
+        }
+    }
+
+    public function updateStatus(int $id, string $status): void
+    {
+        $stmt = $this->pdo->prepare('UPDATE books SET status = ? WHERE id = ?');
+        $stmt->execute([$status, $id]);
+    }
+
+    /** Turns a UNIQUE (user_id, title) violation into a 400, rethrows anything else. */
+    private function handleDuplicateTitle(\PDOException $e): never
+    {
+        if (($e->errorInfo[1] ?? null) === 1062) {
+            throw new HttpException(400, 'You already have a book with this title');
+        }
+        throw $e;
     }
 }

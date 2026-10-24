@@ -46,6 +46,8 @@ try {
     $router->add('POST', '/logout', [$auth, 'logout']);
     $router->add('POST', '/books', [$books, 'create']);
     $router->add('GET', '/books', [$books, 'list']);
+    $router->add('PUT', '/books/{id}', [$books, 'update']);
+    $router->add('PATCH', '/books/{id}/status', [$books, 'status']);
 
     $response = $router->dispatch(Request::fromGlobals());
 
