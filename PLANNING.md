@@ -102,16 +102,15 @@ The final submission will include the application source code, database schema a
 # 9. Todos (Kanban Style)
 
 ## To do
-- [ ] Books: create + list (pagination, tag filter)
-- [ ] Books: update, status, delete
-- [ ] Security review
 - [ ] Tests, README, database dump
 - [ ] Security review
     - [ ] **Found:** Nginx `root` points to `app/`, so files like `/.env`, `/composer.json`
       and `/vendor/*` may be served directly (`.env` contains DB credentials).
       Fix: only expose `index.php` (e.g. move it to `app/public/` and point `root` there).
+
 ## Doing
-- [ ] AuthMiddleware + Logout
+- [ ] Books: create + list (pagination, tag filter)
+- [ ] Books: update, status, delete
 
 ## Done
 - [x] Setup (Docker, Composer, .env)
@@ -119,7 +118,7 @@ The final submission will include the application source code, database schema a
 - [x] HTTP foundation
 - [x] Register
 - [x] Login
-
+- [x] AuthMiddleware + Logout
 
 ## Later (as bonus)
 - [ ] Search books by author
