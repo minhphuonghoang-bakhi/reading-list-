@@ -45,6 +45,7 @@ try {
     $router->add('POST', '/login', [$auth, 'login']);
     $router->add('POST', '/logout', [$auth, 'logout']);
     $router->add('POST', '/books', [$books, 'create']);
+    $router->add('GET', '/books', [$books, 'list']);
 
     $response = $router->dispatch(Request::fromGlobals());
 

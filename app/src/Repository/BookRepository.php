@@ -72,4 +72,50 @@ final class BookRepository {
 
         return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
+
+    /** @return Book[] */
+    public function listForUser(int $userId, int $limit, int $offset, ?string $tag): array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT b.id, b.user_id, b.title, b.description, b.status FROM books b'
+            . $this->listFilter($tag)
+            . ' ORDER BY b.id DESC LIMIT :limit OFFSET :offset'
+        );
+        $stmt->bindValue('user_id', $userId, \PDO::PARAM_INT);
+        if ($tag !== null) {
+            $stmt->bindValue('tag', $tag);
+        }
+        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $stmt->bindValue('offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return array_map(fn (array $row) => $this->toBook($row), $stmt->fetchAll());
+    }
+
+    public function countForUser(int $userId, ?string $tag): int
+    {
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM books b' . $this->listFilter($tag));
+        $stmt->bindValue('user_id', $userId, \PDO::PARAM_INT);
+        if ($tag !== null) {
+            $stmt->bindValue('tag', $tag);
+        }
+        $stmt->execute();
+
+        return (int)$stmt->fetchColumn();
+    }
+
+    /** WHERE clause shared by list and count, so both always use the same filter. */
+    private function listFilter(?string $tag): string
+    {
+        $sql = ' WHERE b.user_id = :user_id';
+        if ($tag !== null) {
+            $sql .= ' AND EXISTS (
+                SELECT 1 FROM book_tag bt
+                JOIN tags t ON t.id = bt.tag_id
+                WHERE bt.book_id = b.id AND t.name = :tag
+            )';
+        }
+
+        return $sql;
+    }
 }

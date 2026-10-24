@@ -43,6 +43,37 @@ final class BookValidator
             'tags' => array_values(array_unique($cleanTags)),
         ];
     }
+
+    private const MAX_LIMIT = 100;
+
+    public static function listQuery(array $query): array
+    {
+        $page = self::positiveInt($query['page'] ?? '1', 'page');
+        $limit = self::positiveInt($query['limit'] ?? '10', 'limit');
+        if ($limit > self::MAX_LIMIT) {
+            throw new HttpException(400, 'limit must not be greater than 100');
+        }
+
+        $tag = $query['tag'] ?? null;
+        if ($tag !== null && (!is_string($tag) || trim($tag) === '')) {
+            throw new HttpException(400, 'tag must be a non-empty string');
+        }
+
+        return [
+            'page' => $page,
+            'limit' => $limit,
+            'tag' => $tag === null ? null : mb_strtolower(trim($tag)),
+        ];
+    }
+
+    private static function positiveInt(mixed $value, string $name): int
+    {
+        $int = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+        if ($int === false) {
+            throw new HttpException(400, "$name must be a positive integer");
+        }
+        return $int;
+    }
 }
 
 

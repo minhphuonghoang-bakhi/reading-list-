@@ -28,4 +28,17 @@ final class BookService {
         }
         return $this->books->find($bookId);  // Book object
     }
+
+    /** @return array{books: Book[], total: int} */
+    public function list(int $userId, int $page, int $limit, ?string $tag): array
+    {
+        $offset = ($page - 1) * $limit;
+
+        return [
+            'books' => $this->books->listForUser($userId, $limit, $offset, $tag),
+            'total' => $this->books->countForUser($userId, $tag),
+        ];
+    }
+
+
 }
