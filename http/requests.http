@@ -191,3 +191,15 @@ Authorization: Bearer {{token2}}
 Content-Type: application/json
 
 {"status": "read"}
+
+### Jane deletes John's book (expect 403)
+DELETE http://localhost:8080/books/{{bookId}}
+Authorization: Bearer {{token2}}
+
+### Delete book sucessfully - No body content (expect 204)
+DELETE http://localhost:8080/books/{{bookId}}
+Authorization: Bearer {{token}}
+
+### Delete the same book again (expect 404)
+DELETE http://localhost:8080/books/{{bookId}}
+Authorization: Bearer {{token}}
