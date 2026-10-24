@@ -117,3 +117,77 @@ Authorization: Bearer {{token}}
 
 ### List without token (expect 401)
 GET http://localhost:8080/books
+
+### Register Jane (run once)
+POST http://localhost:8080/register
+Content-Type: application/json
+
+{"name": "Jane Doe", "email": "jane@example.com", "password": "password123"}
+
+> {% client.global.set("token2", response.body.token); %}
+
+### Login as Jane (saves token2)
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{"email": "jane@example.com", "password": "password123"}
+
+> {% client.global.set("token2", response.body.token); %}
+
+### Create book for update tests (saves bookId)
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Book to update", "tags": ["draft"]}
+
+> {% client.global.set("bookId", response.body.id); %}
+
+### Update book (expect 200, new title and tags)
+PUT http://localhost:8080/books/{{bookId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Book updated", "description": "Now with a description", "tags": ["tech"]}
+
+### Update to an existing title (expect 400)
+PUT http://localhost:8080/books/{{bookId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Clean Code", "tags": []}
+
+### Update non-existing book (expect 404)
+PUT http://localhost:8080/books/999999
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Nope"}
+
+### Jane updates John's book (expect 403)
+PUT http://localhost:8080/books/{{bookId}}
+Authorization: Bearer {{token2}}
+Content-Type: application/json
+
+{"title": "Hacked"}
+
+### Change status (expect 200, status "reading")
+PATCH http://localhost:8080/books/{{bookId}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"status": "reading"}
+
+### Invalid status (expect 400)
+PATCH http://localhost:8080/books/{{bookId}}/status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"status": "finished"}
+
+### Jane changes John's status (expect 403)
+PATCH http://localhost:8080/books/{{bookId}}/status
+Authorization: Bearer {{token2}}
+Content-Type: application/json
+
+{"status": "read"}
