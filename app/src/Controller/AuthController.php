@@ -11,8 +11,7 @@ use App\Validation\AuthValidator;
 
 final class AuthController
 {
-    public function __construct(private AuthService $auth)
-    {
+    public function __construct(private AuthService $auth) {
     }
 
     public function register(Request $request, array $params = []): Response
