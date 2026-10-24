@@ -140,4 +140,10 @@ final class BookRepository {
         }
         throw $e;
     }
+
+    public function delete(int $id): void
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM books WHERE id = ?');
+        $stmt->execute([$id]);
+    }
 }

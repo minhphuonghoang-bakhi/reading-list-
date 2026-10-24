@@ -81,4 +81,10 @@ final class BookService {
 
         return $book;
     }
+
+    public function delete(int $userId, int $bookId): void
+    {
+        $this->findOwned($userId, $bookId);
+        $this->books->delete($bookId);
+    }
 }

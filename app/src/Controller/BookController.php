@@ -63,4 +63,14 @@ final class BookController {
 
         return Response::json($book->toArray());
     }
+
+    public function delete(Request $request, array $params = []): Response
+    {
+        $userId = $this->authenticator->userId($request);
+        $bookId = BookValidator::id($params);
+
+        $this->books->delete($userId, $bookId);
+
+        return Response::noContent();
+    }
 }

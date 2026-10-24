@@ -48,6 +48,7 @@ try {
     $router->add('GET', '/books', [$books, 'list']);
     $router->add('PUT', '/books/{id}', [$books, 'update']);
     $router->add('PATCH', '/books/{id}/status', [$books, 'status']);
+    $router->add('DELETE', '/books/{id}', [$books, 'delete']);
 
     $response = $router->dispatch(Request::fromGlobals());
 
