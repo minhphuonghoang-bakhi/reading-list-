@@ -63,3 +63,57 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {"title": "", "tags": "tech"}
+
+### Seed: book with coding tag
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Clean Code", "description": "A handbook of agile software craftsmanship", "tags": ["coding", "tech"]}
+
+### Seed: another coding book
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Refactoring", "description": "Improving the design of existing code", "tags": ["Coding", "must-read"]}
+
+### Seed: fiction book
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "The Hobbit", "description": "A fantasy adventure", "tags": ["fiction", "weekend"]}
+
+### Seed: book with tag containing a space
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Dune", "tags": ["fiction", "book club"]}
+
+### Seed: book without tags
+POST http://localhost:8080/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"title": "Atomic Habits", "description": "Small changes, remarkable results"}
+
+### List books (expect 200)
+GET http://localhost:8080/books
+Authorization: Bearer {{token}}
+
+### List page 2 with limit 1 (expect 200, 1 book, total unchanged)
+GET http://localhost:8080/books?page=2&limit=1
+Authorization: Bearer {{token}}
+
+### Filter by tag (expect only books tagged "coding")
+GET http://localhost:8080/books?tag=Coding
+Authorization: Bearer {{token}}
+
+### Invalid limit (expect 400)
+GET http://localhost:8080/books?limit=1000
+Authorization: Bearer {{token}}
+
+### List without token (expect 401)
+GET http://localhost:8080/books
