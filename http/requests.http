@@ -203,3 +203,12 @@ Authorization: Bearer {{token}}
 ### Delete the same book again (expect 404)
 DELETE http://localhost:8080/books/{{bookId}}
 Authorization: Bearer {{token}}
+
+### Security: .env must not be readable (expect 404)
+GET http://localhost:8080/.env
+
+### Security: composer.json must not be readable (expect 404)
+GET http://localhost:8080/composer.json
+
+### Security: PHP files in src/ must not be executable directly (expect 404)
+GET http://localhost:8080/src/Support/Database.php
