@@ -42,4 +42,12 @@ final class AuthService {
 
         return $this->tokens->createForUser((int) $user['id']);
     }
+
+    /** Revokes the given token. */
+    public function logout(?string $token): void
+    {
+        if ($token === null || !$this->tokens->delete($token)) {
+            throw new HttpException(401, 'Unauthorized');
+        }
+    }
 }
