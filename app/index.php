@@ -26,6 +26,7 @@ try {
     $router->add('GET', '/health', fn () => Response::json(['status' => 'ok']));
     $router->add('POST', '/register', [$auth, 'register']);
     $router->add('POST', '/login', [$auth, 'login']);
+    $router->add('POST', '/logout', [$auth, 'logout']);
 
     $response = $router->dispatch(Request::fromGlobals());
 
