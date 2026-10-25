@@ -10,7 +10,7 @@ use App\Model\Book;
 final class BookRepository {
     public function __construct(private \PDO $pdo) {
     }
-    //CREATE
+
     public function create(int $userId, string $title, ?string $description): int
     {
         $stmt = $this->pdo->prepare(
@@ -34,18 +34,49 @@ final class BookRepository {
         }
     }
 
-    public function find(int $id): ?Book {
+    public function find(int $id): ?Book
+    {
         $stmt = $this->pdo->prepare(
             'SELECT id, user_id, title, description, status FROM books WHERE id = ?'
         );
         $stmt->execute([$id]);
-        $row = $stmt->fetch(); //array
+        $row = $stmt->fetch();
+        if ($row === false) {
+            return null;
+        }
+        return $this->toBook($row, $this->tagNamesForBooks([$id])[$id] ?? []);
+    }
 
-        return $row === false ? null : $this->toBook($row);
+    /**
+     * Loads the tags of many books in one query.
+     * @param int[] $bookIds
+     * @return array<int, string[]> book id => tag names
+     */
+    private function tagNamesForBooks(array $bookIds): array
+    {
+        if ($bookIds === []) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($bookIds), '?'));
+        $stmt = $this->pdo->prepare(
+            "SELECT bt.book_id, t.name FROM book_tag bt
+             JOIN tags t ON t.id = bt.tag_id
+             WHERE bt.book_id IN ($placeholders)
+             ORDER BY t.name"
+        );
+        $stmt->execute(array_values($bookIds));
+
+        $tags = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $tags[(int)$row['book_id']][] = $row['name'];
+        }
+
+        return $tags;
     }
 
     /** toBook() as a separate method to reuse instead of directly used in find() */
-    private function toBook(array $row): Book
+    private function toBook(array $row, array $tags): Book
     {
         return new Book(
             (int)$row['id'],
@@ -53,21 +84,8 @@ final class BookRepository {
             $row['title'],
             $row['description'],
             $row['status'],
-            $this->tagNames((int)$row['id']),
+            $tags,
         );
-    }
-    /** @return string[] */
-    private function tagNames(int $bookId): array
-    {
-        $stmt = $this->pdo->prepare(
-            'SELECT t.name FROM tags t
-             JOIN book_tag bt ON bt.tag_id = t.id
-             WHERE bt.book_id = ?
-             ORDER BY t.name'
-        );
-        $stmt->execute([$bookId]);
-
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     /** @return Book[] */
@@ -86,7 +104,10 @@ final class BookRepository {
         $stmt->bindValue('offset', $offset, \PDO::PARAM_INT);
         $stmt->execute();
 
-        return array_map(fn (array $row) => $this->toBook($row), $stmt->fetchAll());
+        $rows = $stmt->fetchAll();
+        $tags = $this->tagNamesForBooks(array_column($rows, 'id'));
+
+        return array_map(fn (array $row) => $this->toBook($row, $tags[$row['id']] ?? []), $rows);
     }
 
     public function countForUser(int $userId, ?string $tag): int
