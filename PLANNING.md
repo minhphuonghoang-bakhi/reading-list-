@@ -97,7 +97,7 @@ I will test the API using an HTTP client such as Postman or curl, including succ
 
 Special attention will be given to authentication, data validation, and ensuring that users cannot access or modify other users' books.
 
-The final submission will include the application source code, database schema and required data export, together with README documentation describing setup, usage, and relevant design decisions.
+The final submission will include the application source code, database schema and required data export.
 
 # 9. Todos (Kanban Style)
 
@@ -119,8 +119,5 @@ The final submission will include the application source code, database schema a
       and `/vendor/*` may be served directly (`.env` contains DB credentials).
       Fix: only expose `index.php` (e.g. move it to `app/public/` and point `root` there).
 - [x] Tests, database dump
+- [x] Unit tests for validatos
 
-## Later (as bonus)
-- [ ] Search books by author
-- [ ] Rate limiting
-- [ ] Unit tests for services
