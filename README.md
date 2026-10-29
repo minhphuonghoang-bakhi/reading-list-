@@ -4,7 +4,6 @@ A REST API for a personal reading list, written in plain PHP 8.5 without a frame
 Users can register, log in and manage their own books with a reading status and user-scoped tags.
 
 I built it to practise REST API design, security and a clean layered architecture from scratch.
-The planning and the Kanban board are in [`PLANNING.md`](PLANNING.md).
 
 ## Quick start
 
@@ -143,15 +142,6 @@ through its constructor, and one PDO connection is shared by all repositories.
 - Nginx routes every request to `index.php` and executes no other PHP file, so files like
   `.env` or `composer.json` can never be downloaded (I found and fixed this while testing).
 - PHP errors are never displayed; warnings are converted to exceptions, logged, and returned as a generic `500`.
-
-## What I would do next
-
-- Token expiry and a "log out everywhere" endpoint.
-- Keyset pagination (`WHERE id < ?`) instead of `OFFSET`, so deep pages stay fast.
-- Random public ids (UUIDs), since sequential ids reveal how many books exist.
-- Unit tests for the services: the repositories would need interfaces (they are `final`) so the
-  services can receive fakes; constructor injection already makes this possible.
-- Rate limiting on `/login` and `/register`.
 
 ## Credits
 
