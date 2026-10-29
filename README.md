@@ -19,17 +19,18 @@ docker compose up -d
 docker compose exec -w /var/www/html/app php composer install
 
 # 4. Import the database (schema + demo data)
-docker compose exec -T mysql mysql -u challenge -pchallenge challenge < database/data.sql
+docker compose exec -T mysql mysql -u reading_list -psecret reading_list < database/data.sql
 ```
 
 On Windows PowerShell, `<` is not supported. Use this for step 4:
 
 ```powershell
-cmd /c "docker compose exec -T mysql mysql -u challenge -pchallenge challenge < database\data.sql"
+cmd /c "docker compose exec -T mysql mysql -u reading_list -psecret reading_list < database\data.sql"
 ```
 
 The API runs at **http://localhost:8080**. `GET /health` returns `{"status": "ok"}`.
 To start with an empty database instead, run `database/schema.sql`.
+The local credentials (`reading_list` / `secret`) are for development only.
 
 ### Demo accounts
 
@@ -154,5 +155,6 @@ through its constructor, and one PDO connection is shared by all repositories.
 
 ## Credits
 
-The Docker environment (PHP, Nginx, MySQL) started from a provided template; I adapted the
-Nginx configuration for security. All application code is my own.
+The Docker setup started from a provided template. I have since rewritten the Compose file
+and the Nginx configuration; the Dockerfile is still close to the original. All application
+code is my own.

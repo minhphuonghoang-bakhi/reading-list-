@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.4.11, for Linux (x86_64)
 --
--- Host: localhost    Database: challenge
+-- Host: localhost    Database: reading_list
 -- ------------------------------------------------------
 -- Server version	8.4.11
 
